@@ -38,6 +38,7 @@ def Login(page):
     # Campos de entrada
     login_input = ft.TextField(label="Login", width=300)
     password_input = ft.TextField(label="Password", password=True, width=300, can_reveal_password = True)
+    clave_invalida = ft.Text("")
 
     mensaje = ft.Column()
 
@@ -45,10 +46,9 @@ def Login(page):
     def on_login_click(e):
         login = login_input.value
         password = password_input.value
-        
+
         if verificar_usuario(login, password):
 
-            page.add(ft.Text("¡Login exitoso!"))
             fila = ft.Row(
                 controls=[
                     ft.Text("¡ Bienvenido "), 
@@ -57,11 +57,14 @@ def Login(page):
                 ]
             )
             mensaje.controls.append(fila) 
+            page.overlay.append(ft.SnackBar(ft.Text("")))
+            page.overlay.append(ft.SnackBar(ft.Text("¡Login exitoso!")))
             page.update()
             # Aquí puedes redirigir a otra pantalla si es necesario
         else:
-            page.add(ft.Text("Credenciales incorrectas. Intenta de nuevo."))
-    
+            page.overlay.append(ft.SnackBar(ft.Text("Credenciales incorrectas. Intenta de nuevo.")))
+            page.update()
+
     # Botón de login
     login_button = ft.ElevatedButton(text="Iniciar Sesión", on_click=on_login_click)
     
@@ -69,6 +72,6 @@ def Login(page):
     create_user_button = ft.TextButton(text="Crear nuevo usuario", on_click=lambda e: page.add(ft.Text("Aquí iría la pantalla de registro.")))
     
     # Agregar elementos a la página
-    page.add(login_input, password_input, login_button, create_user_button, mensaje)
+    page.add(login_input, password_input, login_button, create_user_button, mensaje, clave_invalida)
 
 ft.app(target=Login)
