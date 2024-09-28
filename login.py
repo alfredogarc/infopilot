@@ -37,9 +37,7 @@ def Login(page):
     
     # Campos de entrada
     login_input = ft.TextField(label="Login", width=300)
-    password_input = ft.TextField(label="Password", password=True, width=300, can_reveal_password = True)
-    clave_invalida = ft.Text("")
-
+    password_input = ft.TextField(label="Password", password=True, width=300, can_reveal_password=True)
     mensaje = ft.Column()
 
     # Función para manejar el evento de login
@@ -48,21 +46,21 @@ def Login(page):
         password = password_input.value
 
         if verificar_usuario(login, password):
-
             fila = ft.Row(
                 controls=[
                     ft.Text("¡ Bienvenido "), 
-                    ft.Text(session_data['nombrecompleto'], color = ft.colors.GREEN), 
+                    ft.Text(session_data['nombrecompleto'], color=ft.colors.GREEN), 
                     ft.Text("!")
                 ]
             )
             mensaje.controls.append(fila) 
-            page.overlay.append(ft.SnackBar(ft.Text("")))
-            page.overlay.append(ft.SnackBar(ft.Text("¡Login exitoso!")))
+            page.add(mensaje)  # Asegúrate de agregar el mensaje a la página
+            page.snack_bar = ft.SnackBar(content=ft.Text("¡Login exitoso!"))
+            page.snack_bar.open = True  # Abre el SnackBar
             page.update()
-            # Aquí puedes redirigir a otra pantalla si es necesario
         else:
-            page.overlay.append(ft.SnackBar(ft.Text("Credenciales incorrectas. Intenta de nuevo.")))
+            page.snack_bar = ft.SnackBar(content=ft.Text("Credenciales incorrectas. Intente de nuevo"))
+            page.snack_bar.open = True  # Abre el SnackBar
             page.update()
 
     # Botón de login
@@ -72,6 +70,6 @@ def Login(page):
     create_user_button = ft.TextButton(text="Crear nuevo usuario", on_click=lambda e: page.add(ft.Text("Aquí iría la pantalla de registro.")))
     
     # Agregar elementos a la página
-    page.add(login_input, password_input, login_button, create_user_button, mensaje, clave_invalida)
+    page.add(login_input, password_input, login_button, create_user_button, mensaje)
 
 ft.app(target=Login)
