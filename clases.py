@@ -8,8 +8,8 @@ class Usuario:
         self.nombre = nombre
         self.perfil = perfil
 
-    def mostrar_usuario(self, page):
-        contenedor = ft.Container(
+    def mostrar_usuario(self):
+        return ft.Container(
             content=ft.Column(
                 controls=[
                     ft.Text(f"Nombre: {self.nombre}", size=16, weight="bold", text_align=ft.TextAlign.CENTER),
@@ -26,8 +26,8 @@ class Usuario:
             height=60,
             alignment=ft.alignment.center
         )
-        page.add(contenedor)
-        page.update()
+        #page.add(contenedor)
+        #page.update()
 
 class FechaHora(ft.Container):
     def __init__(self, **kwargs):
@@ -80,14 +80,22 @@ def main(page):
     
     # Crear un usuario de ejemplo
     usuario = Usuario("Juan Pérez", "Administrador")
-    usuario.mostrar_usuario(page)
     
-    # Crear y mostrar la fecha y hora
-    #fh = FechaHora()
-    page.add(FechaHora())
-    #asyncio.create_task(fh.mostrar_fecha_hora(page))
-    #datos = ft.Column(controls=[usuario, fh])
-    #page.add(datos)
+    # Crear contenedor para alinear ambos elementos
+    contenedor_principal = ft.Container(
+        content=ft.Row(
+            controls=[
+                usuario.mostrar_usuario(),
+                FechaHora()
+            ],
+            alignment=ft.MainAxisAlignment.END,  # Alinear a la derecha
+            spacing=10  # Espacio entre los controles
+        ),
+        alignment=ft.alignment.top_right,  # Alinear en la parte superior derecha
+        padding=10
+    )
+    
+    page.add(contenedor_principal)
     page.update()
 
 ft.app(target=main)
